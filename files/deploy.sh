@@ -5,7 +5,8 @@ sudo sed -i -e 's/127.0.0.1 localhost/127.0.0.1 localhost gobetween-tests/' /etc
 sudo add-apt-repository -y ppa:ubuntu-lxc/lxd-git-master
 sudo apt-get update -qq
 sudo apt-get install -y lxd
-sudo apt-get install -y build-essential pkg-config lxc-dev
+#sudo apt-get install -y build-essential pkg-config lxc-dev
+sudo apt-get install -y build-essential
 sudo lxc config set core.https_address [::]
 sudo lxc config set core.trust_password the-password
 sudo lxc storage create default dir source=/mnt
