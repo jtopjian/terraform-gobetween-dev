@@ -3,10 +3,22 @@ set -x
 
 sudo sed -i -e 's/127.0.0.1 localhost/127.0.0.1 localhost gobetween-tests/' /etc/hosts
 sudo add-apt-repository -y ppa:ubuntu-lxc/lxd-git-master
+
+# Add support for i386 arch
+sudo dpkg --add-architecture i386
+
 sudo apt-get update -qq
+
+# Install LXD
 sudo apt-get install -y lxd
-#sudo apt-get install -y build-essential pkg-config lxc-dev
+
+# Install dev tools
 sudo apt-get install -y build-essential
+
+# cross-arch/build dependencies
+sudo apt install libacl1-dev:i386
+sudo apt install libc-dev:i386
+
 sudo lxc config set core.https_address [::]
 sudo lxc config set core.trust_password the-password
 sudo lxc storage create default dir source=/mnt
