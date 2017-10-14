@@ -16,8 +16,8 @@ sudo apt-get install -y lxd
 sudo apt-get install -y build-essential
 
 # cross-arch/build dependencies
-sudo apt install libacl1-dev:i386
-sudo apt install libc-dev:i386
+sudo apt install -y libacl1-dev:i386
+sudo apt install -y libc-dev:i386
 
 sudo lxc config set core.https_address [::]
 sudo lxc config set core.trust_password the-password
