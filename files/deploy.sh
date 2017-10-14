@@ -1,18 +1,18 @@
 #!/bin/bash
 set -x
 
-sudo sed -i -e 's/127.0.0.1 localhost/127.0.0.1 localhost gobetween-tests/' /etc/hosts
+sudo sed -i -e 's/127.0.0.1 localhost/127.0.0.1 localhost gb/' /etc/hosts
 sudo add-apt-repository -y ppa:ubuntu-lxc/lxd-git-master
 sudo apt-get update -qq
 sudo apt-get install -y lxd
-#sudo apt-get install -y build-essential pkg-config lxc-dev
 sudo apt-get install -y build-essential
 sudo lxc config set core.https_address [::]
 sudo lxc config set core.trust_password the-password
-sudo lxc storage create default dir source=/mnt
+sudo lxc storage create default dir source=/mnt/lxd
 sudo lxc profile device add default root disk path=/ pool=default
 sudo lxc network create lxdbr0 ipv6.address=none ipv4.address=192.168.244.1/24 ipv4.nat=true
 sudo lxc network attach-profile lxdbr0 default eth0
+sudo lxc image copy images:ubuntu/xenial/amd64 local: --alias ubuntu
 sudo usermod -a -G lxd ubuntu
 sudo chown -R ubuntu: /home/ubuntu/.config
 
@@ -27,12 +27,12 @@ sudo wget -O /usr/local/bin/gimme https://raw.githubusercontent.com/travis-ci/gi
 sudo chmod +x /usr/local/bin/gimme
 
 cat >> ~/.bashrc <<EOF
-eval "\$(/usr/local/bin/gimme 1.8)"
+eval "\$(/usr/local/bin/gimme 1.9)"
 export GOPATH=\$HOME/go
 export PATH=\$PATH:\$GOROOT/bin:\$GOPATH/bin
 EOF
 
-eval "$(/usr/local/bin/gimme 1.8)"
+eval "$(/usr/local/bin/gimme 1.9)"
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
@@ -66,7 +66,7 @@ protocol = "tcp"
 
   [servers.web_servers.discovery]
   kind = "lxd"
-  lxd_server_address = "https://gobetween-tests:8443"
+  lxd_server_address = "https://gb:8443"
   lxd_container_label_key = "user.gobetween.label"
   lxd_container_port_key = "user.gobetween.port"
   lxd_container_label_value = "web"
